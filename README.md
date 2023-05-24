@@ -5,6 +5,21 @@ This project uses ensemble learning to achieve the task.
 
 - I have used pytorch 2.0 and pytorch-lightning 2.0 as a framework to the networks.
 
+A sample result can be seen here:
+Image:
+
+![Image](images/image.png)
+
+Prediction:
+- Red : Static Class
+- Green : Road Class
+- Blue : Dynamic Class
+- Black : Clutter Class
+![Image](images/pred.png)
+
+Ground Truth Mask:
+
+![Image](images/gt.png)
 ## Install
 
 You can install using the following commands:
@@ -75,6 +90,7 @@ python3 inference.py \
 -b 6 \
 -m 
 ```
+
 
 ## Report
 
