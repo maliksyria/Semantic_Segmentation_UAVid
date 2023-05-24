@@ -8,18 +8,18 @@ This project uses ensemble learning to achieve the task.
 A sample result can be seen here:
 Image:
 
-![Image](images/image.png)
+![Image](images/img.png)
 
 Prediction:
 - Red : Static Class
 - Green : Road Class
 - Blue : Dynamic Class
 - Black : Clutter Class
-![Image](images/pred.png)
+![Image](images/prediction.png)
 
 Ground Truth Mask:
 
-![Image](images/gt.png)
+![Image](images/mask.png)
 ## Install
 
 You can install using the following commands:
