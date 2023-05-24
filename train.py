@@ -3,7 +3,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from utils.cfg import py2cfg
 import os
 import torch
-from src.lightning.lightning_module import UnetFormerModule,SegFormerModule,EffNet
+from src.lightning.lightning_module import UnetFormerModule,SegFormerModule,FPNetModule
 import numpy as np
 import argparse
 from pathlib import Path
@@ -24,7 +24,7 @@ def seed(seed_num):
 def get_args():
     parser = argparse.ArgumentParser()
     arg = parser.add_argument
-    arg("-c", "--config_path", type=Path, help="Path to the config.", default='/home/ami/PycharmProjects/sber_task/config/Segformer.py')
+    arg("-c", "--config_path", type=Path, help="Path to the config.")
     return parser.parse_args()
 
 def main():
@@ -51,16 +51,15 @@ def main():
             model = UnetFormerModule(config)
     elif config.net_name == "FPN":
         if config.pretrained_ckpt_path:
-            model = EffNet.load_from_checkpoint(config.pretrained_ckpt_path, config=config)
+            model = FPNetModule.load_from_checkpoint(config.pretrained_ckpt_path, config=config)
         else:
-            model = EffNet(config)
+            model = FPNetModule(config)
 
 
     trainer = pl.Trainer(devices=config.gpus, max_epochs=config.max_epoch, accelerator='auto',
                          check_val_every_n_epoch=config.check_val_every_n_epoch,
                          callbacks=[checkpoint_callback], strategy='auto',
                          enable_checkpointing=config.enable_checkpointing,precision=32,
-                         gradient_clip_val=1e-1,accumulate_grad_batches=config.accumulate_bs,
                          logger=logger)
 
 

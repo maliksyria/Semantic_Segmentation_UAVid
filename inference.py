@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 import glob
-from src.lightning.lightning_module import SegFormerModule,UnetFormerModule,EffNet
+from src.lightning.lightning_module import SegFormerModule,UnetFormerModule,FPNetModule
 from PIL import Image
 import ttach as tta
 import cv2
@@ -42,8 +42,9 @@ def uavid2rgb(mask):
 def get_args():
     parser = argparse.ArgumentParser()
     arg = parser.add_argument
-    arg("-i", "--image_path", type=str, default='/media/ami/big_space/sber_task/uavid/uavid_val', help="Path to  UAVid test/val")
+    arg("-i", "--image_path", type=str, help="Path to  UAVid test/val",required=True)
     arg("-c", "--config_path", type=Path, required=True, help="Path to  config",nargs='+')
+    arg("-w", "--weights", required=True, help="List of weights for ensemble learning ",  nargs='+')
     arg("-o", "--output_path", type=Path, help="Path to save resulting masks.", required=True)
     arg("-t", "--tta", help="Test time augmentation.", default="lr", choices=[None, "lr"])
     arg("-ph", "--patch-height", help="height of patch size", type=int, default=1024)
@@ -144,6 +145,9 @@ def get_raw_pred(model,input):
                                                      size=input['img'].size(dim=2),  # (height, width)
                                                      mode='bilinear',
                                                      align_corners=False)
+    elif isinstance(model,FPNetModule):
+        raw_prediction = model(input['img'].cuda("cuda:0"))
+        raw_prediction = nn.Softmax(dim=1)(raw_prediction)
     return raw_prediction
 
 def main():
@@ -167,6 +171,10 @@ def main():
             model = UnetFormerModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
         elif cfg.net_name=="Segformer":
             model = SegFormerModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
+        elif cfg.net_name=="FPN":
+            model = FPNetModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
+
+
         model.cuda("cuda:0")
         model.eval()
         models.append(model)
@@ -200,7 +208,7 @@ def main():
             output_mask = np.zeros(shape=(output_height, output_width), dtype=np.uint8)
             output_tiles = []
             preds = []
-            weights= [0.5,0.5]
+            weights= [float(i) for i in args.weights]
             k = 0
             with torch.no_grad():
                 dataloader = DataLoader(dataset=dataset, batch_size=args.batch_size,

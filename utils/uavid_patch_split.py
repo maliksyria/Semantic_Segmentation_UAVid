@@ -13,9 +13,9 @@ import random
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input-dir", default="/media/ami/big_space/sber_task/uavid/uavid_val")
-    parser.add_argument("--output-img-dir", default="/media/ami/big_space/sber_task/uavid/val_del/images")
-    parser.add_argument("--output-mask-dir", default="/media/ami/big_space/sber_task/uavid/val_del/masks")
+    parser.add_argument("--input-dir", default="./uavid/uavid_val")
+    parser.add_argument("--output-img-dir", default="./val/images")
+    parser.add_argument("--output-mask-dir", default="./val/masks")
     parser.add_argument("--split-size-h", type=int, default=1024)
     parser.add_argument("--split-size-w", type=int, default=1024)
     parser.add_argument("--stride-h", type=int, default=1024)

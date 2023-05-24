@@ -211,7 +211,7 @@ class SegFormerModule(pl.LightningModule):
         return self.config.val_loader
 
 
-class EffNet(pl.LightningModule):
+class FPNetModule(pl.LightningModule):
 
     def __init__(self,config):
         super().__init__()

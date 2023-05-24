@@ -13,8 +13,8 @@ classes = CLASSES
 BASE_DIR = os.getcwd()
 MODELS_DIR = f"{BASE_DIR}/results"
 LOGS_DIR = f"{BASE_DIR}/logs"
-#DATA_DIR = f"{BASE_DIR}/data"
-DATA_DIR = "/media/ami/big_space/sber_task/uavid"
+DATA_DIR = f"{BASE_DIR}/uavid"
+
 now = datetime.now()
 dt_string = now.strftime("%d_%m_%Y_%H:%M")
 experiment_name = "Unetformer_{}".format(dt_string)
