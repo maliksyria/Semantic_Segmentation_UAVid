@@ -26,11 +26,13 @@ You can install using the following commands:
 ```
 conda create -n uavid python=3.9
 conda activate uavid
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 git clone https://github.com/maliksyria/Semantic_Segmentation_UAVid.git
 cd Semantic_Segmentation_UAVid
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
 ```
+
+
 ## Models 
 This repository contains three architectures:
 
@@ -77,13 +79,13 @@ This is an example of running the three models together
 
 ```-c```  path of the config files of models. You may use one or more
 
-```-w```  The weight for each config file (for each model) 
+```-w```  weight for each config file (for each model) 
 
 ```-o``` output path 
 
 ```-b``` batch size
 
-```-m``` Whether the set has or not masks (test set does not have masks to evaluate on)
+```-m``` flag whether the set has masks or not (test set does not have masks to evaluate on)
 ```
 python3 inference.py \
 -i ./uavid/uavid_val \
@@ -96,11 +98,20 @@ python3 inference.py \
 ```
 
 ## Docker 
-A docker image based on Ubuntu 20.04, cuda11.8, PyTorch 2.0 with Python 3.9. It contains models' weights.
+
+This docker image based on Ubuntu 20.04, cuda11.8, PyTorch 2.0 with Python 3.9. It contains models' weights.
+
+**Install Docker**
+
+```
+sudo apt install docker.io
+```
+
+To use the provided docker you also should have [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker) on the host machine.
 
 **Build**
 ```
-cd Semantic_Segmentation_UAVid
+cd Semantic_Segmentation_UAVid/docker
 docker build -t semantic_uavid:last .
 ```
 
@@ -125,4 +136,4 @@ A report of training process of the models can be seen [in WandB](https://wandb.
 - ~~Create Jupyter Notebook as a demo of the work~~
 - ~~Create docker~~
 - ~~Test Time Augmentation (TTA) implementation~~
-- More explanation of architectures in notebook
+- ~~More explanation of architectures in notebook~~

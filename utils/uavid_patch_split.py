@@ -2,6 +2,7 @@ import glob
 import os
 import numpy as np
 import cv2
+from pathlib import Path
 import multiprocessing.pool as mpp
 import multiprocessing as mp
 import time
@@ -88,6 +89,7 @@ def patch_format(inp):
     img_paths = glob.glob(os.path.join(input_dir, str(seq), 'Images',  "*.png"))
     mask_paths = glob.glob(os.path.join(input_dir, str(seq), 'Labels', "*.png"))
     for img_path, mask_path in zip(img_paths, mask_paths):
+        print("Splitting and relabelling of image: "+Path(img_path).stem+".png")
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
         mask = cv2.imread(mask_path, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

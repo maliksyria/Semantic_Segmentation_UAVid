@@ -10,8 +10,6 @@ import random
 
 CLASSES = ('Static','Road','Dynamic',"Clutter")
 ORIGIN_IMG_SIZE = (1024, 1024)
-INPUT_IMG_SIZE = (1024, 1024)
-TEST_IMG_SIZE = (1024, 1024)
 
 class UAVID(Dataset):
     def __init__(self, data_root='data/uavid/val', mode='val', img_dir='images', mask_dir='masks',
