@@ -112,7 +112,7 @@ docker run -it \
 ```
 
 ## Jupyter notebook
-A walkthrough and explanation of parts of the work can be seen in this [Notebook]()
+A walkthrough and explanation of parts of the work can be seen in this [Notebook](Semantic_Seg_UAVid.ipynb)
 ## Report
 
 A report of training process of the models can be seen [in WandB](https://wandb.ai/maliksyria/UAVid_Semantic/reports/Semantic-Segmentation-of-UAVid-Dataset--Vmlldzo0NDU1MTEy)
@@ -121,3 +121,4 @@ A report of training process of the models can be seen [in WandB](https://wandb.
 - ~~Create Jupyter Notebook as a demo of the work~~
 - ~~Create docker~~
 - ~~Test Time Augmentation (TTA) implementation~~
+- More explanation of architectures in notebook
