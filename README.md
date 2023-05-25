@@ -36,7 +36,7 @@ This repository contains three architectures:
 - UNetFormer
 - Feature Pyramid Network 
 
-You can add your own architecture by add a new config file in [config folder](config/), and add a Pytorch-Lightning Module in [lightning_module file](src/lightning/lightning_module.py)
+You can add your own architecture by add a new config file in [config folder](config/), and add a Pytorch-Lightning Module in [lightning_module folder](src/lightning/)
 
 
 Pretrained Weights of models on UAVid can be access from [Yandex Disk](https://disk.yandex.ru/d/AINrvKNrpEjjpQ)
@@ -54,13 +54,15 @@ python utils/uavid_patch_split.py \
 --split-size-h 1024 --split-size-w 1024 \
 --stride-h 1024 --stride-w 1024
 ```
-Please do so for both train and val sets. 
+- ```uavid``` dataset folder supposed to be inside the repo. folder. 
+- Please do so for both train and val sets. Please be patient, this process takes time.
 
 ## Training
 For training, you only need to adjust your config file and pass it to train file
 
 ```-c``` the path of the config, use different **config** to train different models.
 
+P.S. : Please login into your WandB account to log results. 
 ```
 python3 train.py -c config_file
 ```
@@ -91,12 +93,31 @@ python3 inference.py \
 -m 
 ```
 
+## Docker 
+A docker image based on Ubuntu 20.04, cuda11.8, PyTorch 2.0 with Python 3.9. It contains models' weights.
 
+**Build**
+```
+docker build -t semantic_uavid:last .
+```
+
+**Run**
+To run it make sure to mount the dataset from your local machine into docker container by ```-v``` argument
+``` 
+docker run -it \
+--ipc=host \
+ -v ./uavid:/workspace/uavid \
+ --gpus all \
+ semantic_uavid:last
+```
+
+## Jupyter notebook
+A walkthrough and explanation of parts of the work can be seen in this [Notebook]()
 ## Report
 
-A small report of training process of the models can be seen [in WandD](https://wandb.ai/maliksyria/UAVid_Semantic/reports/Semantic-Segmentation-of-UAVid-Dataset--Vmlldzo0NDU1MTEy)
+A report of training process of the models can be seen [in WandB](https://wandb.ai/maliksyria/UAVid_Semantic/reports/Semantic-Segmentation-of-UAVid-Dataset--Vmlldzo0NDU1MTEy)
 
 ## TODO List
-- Create Jupyter Notebook as a demo of the work
-- Create docker
-- Test Time Augmentation (TTA): full implementation for all models 
+- ~~Create Jupyter Notebook as a demo of the work~~
+- ~~Create docker~~
+- ~~Test Time Augmentation (TTA) implementation~~

@@ -3,7 +3,9 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from utils.cfg import py2cfg
 import os
 import torch
-from src.lightning.lightning_module import UnetFormerModule,SegFormerModule,FPNetModule
+from src.lightning.lightning_fpn import FPNetModule
+from src.lightning.lightning_segformer import SegFormerModule
+from src.lightning.lightning_unetformer import UnetFormerModule
 import numpy as np
 import argparse
 from pathlib import Path

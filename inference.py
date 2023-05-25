@@ -1,7 +1,10 @@
 import argparse
 from pathlib import Path
 import glob
-from src.lightning.lightning_module import SegFormerModule,UnetFormerModule,FPNetModule
+from src.lightning.lightning_fpn import FPNetModule
+from src.lightning.lightning_segformer import SegFormerModule
+from src.lightning.lightning_unetformer import UnetFormerModule
+
 from PIL import Image
 import ttach as tta
 import cv2
@@ -136,16 +139,17 @@ def make_dataset_for_one_huge_image(img_path,mask_path, patch_size):
     return dataset, width_pad, height_pad, output_width, output_height, image_pad, img.shape,mask,img
 
 def get_raw_pred(model,input):
-    if isinstance(model,UnetFormerModule):
-        raw_prediction = model(input['img'].cuda("cuda:0"))
-        raw_prediction = nn.Softmax(dim=1)(raw_prediction)
-    elif isinstance(model,SegFormerModule):
+    if isinstance(model,SegFormerModule):
         output = model(input['img'].cuda("cuda:0"), None)
         raw_prediction = nn.functional.interpolate(output.logits,
                                                      size=input['img'].size(dim=2),  # (height, width)
                                                      mode='bilinear',
                                                      align_corners=False)
-    elif isinstance(model,FPNetModule):
+
+    elif isinstance(model.model,UnetFormerModule):
+        raw_prediction = model(input['img'].cuda("cuda:0"))
+        raw_prediction = nn.Softmax(dim=1)(raw_prediction)
+    elif isinstance(model.model,FPNetModule):
         raw_prediction = model(input['img'].cuda("cuda:0"))
         raw_prediction = nn.Softmax(dim=1)(raw_prediction)
     return raw_prediction
@@ -169,10 +173,13 @@ def main():
         cfg = py2cfg(config)
         if cfg.net_name=="Unetformer":
             model = UnetFormerModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
+            model = tta.SegmentationTTAWrapper(model, transforms)
         elif cfg.net_name=="Segformer":
             model = SegFormerModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
+            #model = tta.SegmentationTTAWrapper(model, transforms)
         elif cfg.net_name=="FPN":
             model = FPNetModule.load_from_checkpoint(os.path.join(cfg.weights_path, cfg.test_weights_name+'.ckpt'), config=cfg)
+            model = tta.SegmentationTTAWrapper(model, transforms)
 
 
         model.cuda("cuda:0")

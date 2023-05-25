@@ -1,12 +1,12 @@
-from torch.utils.data import DataLoader
+import torch
 from src.loss.UNetFormer_loss import UnetFormerLoss
 from src.models.UNetFormer import UNetFormer
 from catalyst.contrib.nn import Lookahead
 from catalyst import utils
-from src.dataset.image_transforms import get_transforms
-from src.dataset.uavid_dataset import *
 from datetime import datetime
+import os
 
+CLASSES = ('Static','Road','Dynamic',"Clutter")
 num_classes = len(CLASSES)
 classes = CLASSES
 
@@ -51,28 +51,6 @@ enable_checkpointing = None  # whether continue training with the checkpoint, de
 net = UNetFormer(num_classes=num_classes)
 # define the loss
 loss = UnetFormerLoss(ignore_index=ignore_index)
-
-# define the dataloader
-
-train_dataset = UAVID(data_root=DATA_DIR+'/train', img_dir='images', mask_dir='masks',
-                             mode='train', mosaic_ratio=0.25, transform=get_transforms(train=True,rain=True,foggy=True), img_size=(1024, 1024))
-
-val_dataset = UAVID(data_root=DATA_DIR+'/val', img_dir='images', mask_dir='masks', mode='val',
-                           mosaic_ratio=0.0, transform=get_transforms(train=False), img_size=(1024, 1024))
-
-train_loader = DataLoader(dataset=train_dataset,
-                          batch_size=train_batch_size,
-                          num_workers=4,
-                          pin_memory=True,
-                          shuffle=True,
-                          drop_last=True)
-
-val_loader = DataLoader(dataset=val_dataset,
-                        batch_size=val_batch_size,
-                        num_workers=4,
-                        shuffle=False,
-                        pin_memory=True,
-                        drop_last=False)
 
 # define the optimizer and scheduler
 

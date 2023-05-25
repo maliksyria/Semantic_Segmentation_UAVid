@@ -13,3 +13,4 @@ addict
 wandb
 transformers
 segmentation_models_pytorch
+notebook
