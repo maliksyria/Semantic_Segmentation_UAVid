@@ -10,6 +10,6 @@ RUN apt-get update && apt-get install -y  \
  
 RUN git init .
 RUN git remote add -t \* -f origin https://github.com/maliksyria/Semantic_Segmentation_UAVid.git
-RUN git checkout master   
+RUN git checkout -f master
 RUN pip3 install --upgrade pip wheel setuptools requests
 RUN pip3 install -r ./requirements.txt

@@ -26,8 +26,10 @@ You can install using the following commands:
 ```
 conda create -n uavid python=3.9
 conda activate uavid
+git clone https://github.com/maliksyria/Semantic_Segmentation_UAVid.git
+cd Semantic_Segmentation_UAVid
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install -r ./requirements.txt
+pip install -r requirements.txt
 ```
 ## Models 
 This repository contains three architectures:
@@ -98,10 +100,12 @@ A docker image based on Ubuntu 20.04, cuda11.8, PyTorch 2.0 with Python 3.9. It 
 
 **Build**
 ```
+cd Semantic_Segmentation_UAVid
 docker build -t semantic_uavid:last .
 ```
 
 **Run**
+
 To run it make sure to mount the dataset from your local machine into docker container by ```-v``` argument
 ``` 
 docker run -it \
