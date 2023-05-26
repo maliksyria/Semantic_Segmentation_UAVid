@@ -1,26 +1,14 @@
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from utils.cfg import py2cfg
-import os
-import torch
 from src.lightning.lightning_fpn import FPNetModule
 from src.lightning.lightning_segformer import SegFormerModule
 from src.lightning.lightning_unetformer import UnetFormerModule
-import numpy as np
 import argparse
 from pathlib import Path
 from pytorch_lightning.loggers import WandbLogger
-import random
 import wandb
-
-def seed(seed_num):
-    random.seed(seed_num)
-    os.environ['PYTHONHASHSEED'] = str(seed_num)
-    np.random.seed(seed_num)
-    torch.manual_seed(seed_num)
-    torch.cuda.manual_seed(seed_num)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = True
+from utils.tools import *
 
 
 def get_args():

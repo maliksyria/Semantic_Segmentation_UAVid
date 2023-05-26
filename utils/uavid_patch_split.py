@@ -1,16 +1,11 @@
 import glob
-import os
-import numpy as np
-import cv2
 from pathlib import Path
 import multiprocessing.pool as mpp
 import multiprocessing as mp
 import time
 import argparse
-import torch
 import albumentations as albu
-import random
-
+from utils.tools import *
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -23,40 +18,6 @@ def parse_args():
     parser.add_argument("--stride-w", type=int, default=1024)
     return parser.parse_args()
 
-def seed_everything(seed):
-    random.seed(seed)
-    os.environ['PYTHONHASHSEED'] = str(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = True
-
-
-Building = np.array([128, 0, 0])  # label 0 Static
-Road = np.array([128, 64, 128]) # label 1 Road
-Tree = np.array([0, 128, 0]) # label 0 Static
-LowVeg = np.array([128, 128, 0]) # label 0 Static
-Moving_Car = np.array([64, 0, 128]) # label 2 Dynamic
-Static_Car = np.array([192, 0, 192]) # label 0 Static
-Human = np.array([64, 64, 0]) # label 2 Dynamic
-Clutter = np.array([0, 0, 0]) # label 3 Clutter
-Boundary = np.array([255, 255, 255]) # label 255
-
-num_classes = 4
-
-def rgb2label(label):
-    label_seg = np.zeros(label.shape[:2], dtype=np.uint8)
-    label_seg[np.all(label == Building, axis=-1)] = 0 #Static
-    label_seg[np.all(label == Road, axis=-1)] = 1 #Road
-    label_seg[np.all(label == Tree, axis=-1)] = 0 #Static
-    label_seg[np.all(label == LowVeg, axis=-1)] = 0 #Static
-    label_seg[np.all(label == Moving_Car, axis=-1)] = 2 #Dynamic
-    label_seg[np.all(label == Static_Car, axis=-1)] = 0 #Static
-    label_seg[np.all(label == Human, axis=-1)] = 2 #Dynamic
-    label_seg[np.all(label == Clutter, axis=-1)] = 3 #Clutter
-    label_seg[np.all(label == Boundary, axis=-1)] = 255 #Boundary
-    return label_seg
 
 
 def image_augment(image, mask):
@@ -130,7 +91,7 @@ def patch_format(inp):
 
 
 if __name__ == "__main__":
-    seed_everything(42)
+    seed(42)
     args = parse_args()
     input_dir = args.input_dir
     imgs_output_dir = args.output_img_dir
