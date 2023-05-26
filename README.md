@@ -38,7 +38,7 @@ This repository with dataset is recommended to be organised in the following str
 ```
 
 ├── config (Configuration files for each model)
-├── docker (Dockerfile needed to build the Docker image with requried dependencies)
+├── docker (Dockerfile needed to build the Docker image with required dependencies)
 ├── model_weights (Model weights trained on UAVid dataset)
 ├── src (Models and dataset source code)
 ├── utils (Tool files)

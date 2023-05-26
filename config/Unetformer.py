@@ -25,7 +25,7 @@ max_epoch = 40
 ignore_index = 255 #class to ignore
 train_batch_size = 8
 val_batch_size = 8
-accumulate_bs = 8
+
 lr = 6e-4
 weight_decay = 0.01
 backbone_lr = 6e-5

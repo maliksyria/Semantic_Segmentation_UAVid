@@ -88,7 +88,6 @@ def get_img_padded(image, patch_size):
 
     width_pad = 0 if rw == 0 else patch_size[1] - rw
     height_pad = 0 if rh == 0 else patch_size[0] - rh
-    # print(oh, ow, rh, rw, height_pad, width_pad)
     h, w = oh + height_pad, ow + width_pad
 
     pad = albu.PadIfNeeded(min_height=h, min_width=w, border_mode=0,
@@ -108,7 +107,6 @@ class InferenceDataset(Dataset):
         img = self.tile_list[index]
         img_id = index
         aug = self.transform(image=img)
-        #transformed = self.transform(image=img.copy(), mask=mask.copy())
         img = aug['image']
         img = torch.from_numpy(img).permute(2, 0, 1).float()
         results = dict(img_id=img_id, img=img)
@@ -185,8 +183,6 @@ def main():
         model.cuda("cuda:0")
         model.eval()
         models.append(model)
-        #model = tta.SegmentationTTAWrapper(model, transforms)
-
     for seq in seqs:
         img_paths = []
         mask_paths = []

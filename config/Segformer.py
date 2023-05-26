@@ -25,11 +25,10 @@ experiment_name = "Segformer_{}".format(dt_string)
 max_epoch = 40
 train_batch_size = 6
 val_batch_size = 6
-accumulate_bs = 8
 
 lr = 6e-5 * 8
 # scheduler
-step = [20, 45, 90]
+step = [20, 30]
 gamma = 0.2
 
 net_name = "Segformer"
