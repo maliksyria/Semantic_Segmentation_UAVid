@@ -32,6 +32,36 @@ cd Semantic_Segmentation_UAVid
 pip install -r requirements.txt
 ```
 
+## Folder Structure
+
+This repository with dataset is recommended to be organised in the following structure:
+```
+
+├── config (Configuration files for each model)
+├── docker (Dockerfile needed to build the Docker image with requried dependencies)
+├── model_weights (Model weights trained on UAVid dataset)
+├── src (Models and dataset source code)
+├── utils (Tool files)
+├── uavid
+│   ├── uavid_train (Original dataset)
+│   │   │   ├── seq1
+│   │   │   │    ├── Images
+│   │   │   │    ├── Labels
+│   ├── uavid_val (Original dataset)
+│   │   │   ├── seq16
+│   │   │   │    ├── Images
+│   │   │   │    ├── Labels
+│   ├── uavid_test (Original dataset)
+│   ├── train (Relabeld and processed dataset)
+│   │   ├── images
+│   │   ├── masks
+│   ├── val (Relabeld and processed dataset)
+│   │   ├── images
+│   │   ├── masks
+├── inference.py
+├── requirements.txt
+├── train.py
+```
 
 ## Models 
 This repository contains three architectures:
@@ -43,7 +73,7 @@ This repository contains three architectures:
 You can add your own architecture by add a new config file in [config folder](config/), and add a Pytorch-Lightning Module in [lightning_module folder](src/lightning/)
 
 
-Pretrained Weights of models on UAVid can be access from [Yandex Disk](https://disk.yandex.ru/d/AINrvKNrpEjjpQ)
+Pretrained Weights of models on UAVid can be downloaded from [Yandex Disk](https://disk.yandex.ru/d/AINrvKNrpEjjpQ)
 
 ## Data Preprocessing
 You can download the dataset from [Kaggle](https://www.kaggle.com/dasmehdixtr/uavid-v1).
@@ -64,11 +94,11 @@ python utils/uavid_patch_split.py \
 ## Training
 For training, you only need to adjust your config file and pass it to train file
 
-```-c``` the path of the config, use different **config** to train different models.
+```-c``` the path of the python config file, use different **config** to train different models.
 
 P.S. : Please login into your WandB account to log results. 
 ```
-python3 train.py -c config_file
+python3 train.py -c config_file.py
 ```
 
 ## Inference
