@@ -109,23 +109,38 @@ This is an example of running the three models together
 
 ```-c```  path of the config files of models. You may use one or more
 
-```-w```  weight for each config file (for each model) 
+```-w```  weight for each config file (for each model) (the "importance" of the model in the ensemble learning) 
 
 ```-o``` output path 
 
 ```-b``` batch size
 
 ```-m``` flag whether the set has masks or not (test set does not have masks to evaluate on)
+
+An example of inferring only on SegFormer:
 ```
 python3 inference.py \
 -i ./uavid/uavid_val \
--c ./config/Unetformer.py ./config/Segformer.py ./config/FPN.py \
--w 0.5 0.5 0.5 \
+-c ./config/Segformer.py \
+-w 1 \
 -o ./results/ \
 -ph 1024 -pw 1024 \
 -b 6 \
 -m 
 ```
+
+An example of inferring on the three models together:
+```
+python3 inference.py \
+-i ./uavid/uavid_val \
+-c ./config/Unetformer.py ./config/Segformer.py ./config/FPN.py \
+-w 0.33 0.33 0.33 \
+-o ./results/ \
+-ph 1024 -pw 1024 \
+-b 6 \
+-m 
+```
+
 
 ## Docker 
 
