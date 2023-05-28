@@ -103,7 +103,6 @@ python3 train.py -c config_file.py
 
 ## Inference
 The inference supposes that you pass one or more models with their correspondent weight in the ensemble learning. 
-This is an example of running the three models together 
 
 ```-i``` input path 
 
